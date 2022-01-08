@@ -1,0 +1,5 @@
+@include('_home_layouts.header')
+@include("_home_layouts.side")
+@include('_home_layouts.nav')
+@include("_home_layouts.content")
+@include("_home_layouts.footer")
