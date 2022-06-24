@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderRequest;
 use App\Order;
+use App\Services\OrderService;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -35,48 +37,16 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OrderRequest $request,OrderService $service)
     {
-        $rules = $this->getRules();
-        $messages = $this->getMessages();
-        $validator = Validator::make($request->all(),$rules,$messages);
-        if($validator->fails()){
-            return redirect()->back()->withErrors($validator)->withInput($request->all());
-        }
-      $order = new Order();
-      $order ->First_name = $request->First_name;
-      $order ->Last_name = $request->input('Last_name');
-      $order ->Email = $request->Email;
-      $order ->whatsapp_number = $request->whatsapp_number;
-      $order ->Message = $request->Message;
-      $order ->save();
+       $order = $service->storeNewOreder(
+           $request->First_name,
+           $request->Last_name,
+           $request->Email,
+           $request->whatsapp_number,
+           $request->Message
+       );
       return redirect("..")->with(['success'=> __('message.Inserted successfuly')]);
-    }
-
-    protected function getRules()
-    {
-        $rules =[
-            'First_name'      => 'required|max:25',
-            'Last_name'       => 'required|max:25',
-            'Email'           => 'required|max:30|unique:orders',
-            'whatsapp_number' => 'required|digits_between:13,14|numeric',
-            'Message'         => 'required|max:2000'
-        ];
-        return $rules;
-    }
-
-    protected function getMessages()
-    {
-        $messages =[
-            'First_name.required'      => __('message.First name is required'),
-            'Last_name.required'       => __('message.Last name is required'),
-            'Email.required'           => __('message.Email is required'),
-            'Email.unique'             => __('message.Email already used'),
-            'whatsapp_number.required' => __('message.Number is required'),
-            'whatsapp_number.digits_between:13,14'    => __('message.Number is required'),
-            'Message.required'         => __('message.Message is required'),
-        ];
-        return $messages;
     }
 
     /**

@@ -79,7 +79,7 @@ class ProfileController extends Controller
             $user = Auth::user();
             $user->avatar = $filename;
             $user->save();
-           } 
+           }
         if(Auth::user()->user_type == 'admin') { return view('admin.profile', array('user'=> Auth::user()));}
         else
           { return view('profile', array('user'=> Auth::user()));}

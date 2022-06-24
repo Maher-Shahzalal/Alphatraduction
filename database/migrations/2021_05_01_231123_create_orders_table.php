@@ -21,7 +21,7 @@ class CreateOrdersTable extends Migration
             $table->string('whatsapp_number');
             $table->string('Message');
             $table->timestamps();
-      
+
         });
     }
 

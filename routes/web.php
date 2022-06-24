@@ -15,7 +15,8 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 */
 
 
-Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function()
+Route::group(['prefix' => LaravelLocalization::setLocale(),
+    'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function()
 {
 
 Route::get('/', function () {
@@ -25,7 +26,7 @@ Route::post('order','OrderController@store');
 
 Route::post('present_pdf','PDFController@store', function () {
     return view('present_pdf');
-});                                                              //PDFController
+});                                                                      //PDF
 Route::get('present_pdf','PDFController@index', function () {
     return view('present_pdf');
 });
@@ -39,7 +40,7 @@ Route::get('order', function () {
 });
 
 // ------------------------------[ Admin panil]-------------------------------
-   // define('PAGINATION_COUNT',10);
+
     Auth::routes(['verify'=>true]);
     Route::group(['middleware' => ['auth','admin']], function()
     {
@@ -47,46 +48,31 @@ Route::get('order', function () {
         Route::prefix('admin_home')-> group(function()
         {
 
-            Route::get('show_users', 'ShowController@index');           //ShowControlle
+            Route::get('show_users', 'ShowController@index');                        //Show
             Route::get('show_users/{User}/delete','UserController@destroy');
-            Route::get('show_orders', 'OrderController@index');         //OrderController
+            Route::get('show_orders', 'OrderController@index');                       //Order
             Route::get('show_orders/{Order}/delete','OrderController@destroy');
             Route::post('/','PDFController@store');
-            Route::get('upload_pdf','PDFController@create');            // PDFController
+            Route::get('upload_pdf','PDFController@create');                          // PDF
             Route::get('show_pdf', 'PDFController@indexPdfAdmin');
             Route::get('show_pdf/{PDF}/delete','PDFController@destroy');
-            Route::get('profile', 'ProfileController@index');           // ProfileController
+            Route::get('profile', 'ProfileController@index');                        // Profile
             Route::post('profile', 'ProfileController@update')->name('admin_profile');
             Route::get('show_media','MediaController@indexPdfAdmin');
             Route::get('upload_media','MediaController@create');
             Route::post('show_media','MediaController@store');
             Route::get('show_media/{Media}/delete','MediaController@destroy');
-
-// languages
-        /**
-            Route::get('index', 'LanguageController@index')->name('admin.languages');
-            Route::get('creat', 'LanguageController@creat')->name('admin.languages.create');
-            Route::post('store', 'LanguageController@store')->name('admin.languages.store');
-            Route::get('main_categories', 'MainCategoryController@index');
-        **/
         });
     });
-/**
-    <li class="list-group-item">
-        <a href="/admin_home/index">Languages</a>
-    </li>
-     <li class="list-group-item">
-        <a href="/admin_home/main_categories">Main catergories</a>
-      </li>
-**/
+
 //-----------------------------------------------------------------------------
 
 
-// ------------------------------[ User]-----------------------------==========
+// ------------------------------[ User ]--------------------------------------
 
     Auth::routes();
-    Route::get('/home', 'MediaController@index')->name('home');
-    Route::get('/home/profile', 'ProfileController@index');        // ProfileController
+    Route::get('/home', 'MediaController@index')->name('home')->middleware('verified');
+    Route::get('/home/profile', 'ProfileController@index');                              // Profile
     Route::post('/home/profile', 'ProfileController@update')->name('profile');
 
 //-----------------------------------------------------------------------------

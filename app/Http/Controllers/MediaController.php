@@ -16,13 +16,13 @@ class MediaController extends Controller
     public function indexPdfAdmin()
     {
         $Media = \App\Media::all();
-        return view('admin.show_media')->with('Media',$Media);;
+        return view('admin.show_media')->with('Media',$Media);
     }
 
     public function index()
     {
         $Media = \App\Media::all();
-        return view('home')->with('Media',$Media);;
+        return view('home')->with('Media',$Media);
     }
 
     /**
